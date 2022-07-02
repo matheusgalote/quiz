@@ -1,9 +1,11 @@
 import React from "react";
+import Quiz from "./Quiz";
 
 const  App = () => {
   return (
-    <div>
-      <h1>Quiz</h1>
+    <div className="container">
+      <h1 className="text-center">Quiz</h1>
+      <Quiz />
     </div>
   );
 }

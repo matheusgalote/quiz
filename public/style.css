@@ -46,3 +46,38 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+
+/* Estilos gerais atributos */
+h1, legend {
+	font-family: 'Roboto', sans-serif;
+	font-weight: 700;
+	font-size: 2rem;
+	margin: 10px;
+}
+
+label {
+	display: block;
+	font-family: 'Finlandica';
+}
+
+input {
+	margin: 10px;
+}
+
+
+/* Estilos gerais personalizados */
+.container {
+	padding: 10px calc((100% - 1200px)/2);
+}
+
+.text-center {
+	text-align: center;
+}
+
+.text-left {
+	text-align: left;
+}
+
+.text-right {
+	text-align: right;
+}
