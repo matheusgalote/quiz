@@ -2,11 +2,12 @@ import React from 'react'
 
 const Checkbox = ({ options, handleChange, id, valor, ...props }) => {
 
+  const letras = ['a) ', 'b) ', 'c) ', 'd) ']
   
   return (
     <>
       {
-        options.map(opcao => {
+        options.map((opcao, index) => {
           return (
             <label key={opcao}>
               <input
@@ -18,7 +19,7 @@ const Checkbox = ({ options, handleChange, id, valor, ...props }) => {
                 onChange={handleChange}
                 {...props}
               />
-              {opcao}
+              {letras[index]}{opcao}
             </label>
           );
         })
