@@ -1,9 +1,10 @@
 import React from 'react';
 import Checkbox from './Checkbox';
+import Menu from './Menu';
 
 const perguntas = [
   {
-    pergunta: 'Qual a catergoria de Nen do Gon de Hunter X Hunter?',
+    pergunta: 'Qual a catergoria de Nen do Gon?',
     options: [
       'Emissor',
       'Manipulador',
@@ -25,6 +26,17 @@ const perguntas = [
     resposta: 'Gourmet, Lista Negra e Arqueólogo',
     id: 'p2',
   },
+  {
+    pergunta: `Entre os caçadores esse é considerado uma refêrencia quando se trata do uso de Nen: `,
+    options: [
+      'Netero',
+      'Kurapika',
+      'Aluka',
+      'Morel'
+    ],
+    resposta: 'Netero',
+    id: 'p3',
+  },
 ]
 
 const Quiz = () => {
@@ -33,50 +45,65 @@ const Quiz = () => {
   const [valor, setValor] = React.useState('');
   const [respostas, setRespostas] = React.useState({
     'p1': '',
-    'p2': ''
+    'p2': '',
+    'p3': ''
   });
   const [resultado, setResultado] = React.useState(null);
 
   function pontuacao() {
 
     const corretas = perguntas.filter(({ id, resposta }) => respostas[id] === resposta);
+    setAtual(atual+1);
 
-    setResultado(`Sua pontuação foi: ${(corretas.length * 100) / perguntas.length}! Você acertou ${corretas.length} de ${perguntas.length}`);
+    setResultado(`Sua pontuação foi: ${((corretas.length * 100) / perguntas.length).toFixed(2)}! Você acertou ${corretas.length} de ${perguntas.length}`);
   }
 
   function handleChange({ target }) {
-    setValor(target.value);
-
-    setRespostas({ ...respostas, [target.id]: target.value })
+    if (!valor) {
+      setValor(target.value);
+      setRespostas({ ...respostas, [target.id]: target.value })
+    } else {
+      setValor('');
+      setRespostas({ ...respostas, [target.id]: '' })
+    }
   }
 
   function proximaPergunta() {
+    setAtual(atual + 1);
+  }
 
-    if (atual < perguntas.length - 1) {
-      setAtual(atual + 1);
-    }
-    else {
-      setAtual(atual + 1);
-      pontuacao()
+  function anterior() {
+    if (atual > 0) {
+      setAtual(atual - 1);
     }
   }
 
 
   return (
-    <form onSubmit={(e) => e.preventDefault()}>
-      {
-        perguntas.map((pergunta, index) => {
-          return atual === index && (
-            <div key={pergunta.id}>
-              <h1>{pergunta.pergunta}</h1>
-              <Checkbox key={pergunta.id} id={pergunta.id} valor={respostas[pergunta.id]} options={pergunta.options} handleChange={handleChange} />
-            </div>
-          );
-        })
-      }
-      <button onClick={proximaPergunta}>Próxima</button>
-      {resultado}
-    </form>
+    <div className='flex'>
+      <form onSubmit={(e) => e.preventDefault()} className='form'>
+        {
+          perguntas.map((pergunta, index) => {
+            return atual === index && (
+              <fieldset key={pergunta.id}>
+                <legend>{pergunta.pergunta}</legend>
+                <Checkbox key={pergunta.id} id={pergunta.id} valor={respostas[pergunta.id]} options={pergunta.options} handleChange={handleChange} />
+              </fieldset>
+            );
+          })
+        }
+
+        {
+          resultado ? <p>{resultado}</p> :
+            <>
+              {atual > 0 && <button onClick={anterior}><i className="fa fa-arrow-left" style={{ margin: '5px' }} aria-hidden="true"></i>Anterior</button>}
+              {atual < perguntas.length - 1 && <button onClick={proximaPergunta}>Próxima<i className="fa fa-arrow-right" style={{ margin: '5px' }} aria-hidden="true"></i></button>}
+              {atual === perguntas.length - 1 && <button onClick={pontuacao}>Enviar<i className="fa fa-arrow-right" style={{ margin: '5px' }} aria-hidden="true"></i></button>}
+            </>
+        }
+      </form>
+      <Menu perguntas={perguntas} respostas={respostas} setAtual={setAtual} atual={atual} />
+    </div>
   )
 }
 
